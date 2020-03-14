@@ -16,4 +16,9 @@ class CourseRepository extends MainRepository
     {
         return ['id', 'name', 'level', 'group'];
     }
+
+    public function getUpdatableColumns()
+    {
+        return ['name', 'level', 'group'];
+    }
 }

@@ -21,13 +21,14 @@ abstract class MainController extends Controller
         $this->repository = $repository;
     }
 
-    public function index()
+    public function index(Request $request)
     {
         return response()->json([
             'data' => [
                 'table'         => $this->repository->getTable(),
                 'displayable'   => array_values($this->repository->getDisplayableColumns()),
-                'records'       => $this->repository->getRecords()
+                'updatable'     => array_values($this->repository->getUpdatableColumns()),
+                'records'       => $this->repository->getRecords($request->limit)
             ]
         ], 200);
     }

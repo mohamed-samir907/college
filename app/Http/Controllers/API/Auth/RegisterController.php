@@ -22,8 +22,7 @@ class RegisterController extends Controller
 
         if ($validation->fails()) {
             return response()->json([
-                'status' => 400,
-                'msg' => 'error',
+                'code' => 2,
                 'data' => $validation->errors()
             ], 400);
         }
@@ -38,9 +37,8 @@ class RegisterController extends Controller
         $data['user'] = new UserResource($user);
 
         return response()->json([
-            'status'    => 200,
-            'msg'       => 'success',
-            'data'      => $data
+            'code'  => 0,
+            'data'  => $data
         ], 200);
     }
 

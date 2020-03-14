@@ -10,7 +10,8 @@
                 </div>
                 <div class="form-group col-md-2">
                     <label for="limit">Display records</label>
-                    <select id="limit" class="form-control" v-model="limit">
+                    <select id="limit" class="form-control" v-model="limit" @change="getRecords">
+                        <option value="25">25</option>
                         <option value="50">50</option>
                         <option value="100">100</option>
                         <option value="500">500</option>
@@ -36,8 +37,13 @@
                     </thead>
                     <tbody>
                         <tr v-for="record in filteredRecords" :key="response.records.indexOf(record)">
-                            <td v-for="columnValue, column in record" :key="column">{{ columnValue }}</td>
-                            <td></td>
+                            <td v-for="(columnValue, column) in record" :key="column">{{ columnValue }}</td>
+                            <td>
+                                <a href="#" @click.prevent="edit(record)" v-if="editing.id !== record.id">Edit</a>
+                                <template v-if="editing.id === record.id">
+                                    <a href="#" @click.prevent="editing.id = null">Cancel</a>
+                                </template>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -47,69 +53,88 @@
 </template>
 
 <script>
-    export default {
-        props: ["endpoint"],
+import queryString from 'query-string';
 
-        data() {
-            return {
-                response: {
-                    table: '',
-                    displayable: [],
-                    records: []
-                },
-                sort: {
-                    key: 'id',
-                    order: 'asc'
-                },
-                quickSearchQuery: '',
-                limit: 50
-            };
-        },
+export default {
+    props: ["endpoint"],
 
-        computed: {
-            filteredRecords() {
-                let data = this.response.records;
-
-                data = data.filter((row) => {
-                    return Object.keys(row).some((key) => {
-                        return String(row[key]).toLowerCase().indexOf(this.quickSearchQuery.toLowerCase()) > -1
-                    });
-                });
-
-                if (this.sort.key) {
-                    data = _.orderBy(data, (i) => {
-                        let value = i[this.sort.key];
-
-                        if (!isNaN(parseFloat(value))) {
-                            return parseFloat(value);
-                        }
-
-                        return String(i[this.sort.key]).toLowerCase();
-                    }, this.sort.order);
-                }
-
-                return data;
-            }
-        },
-
-        methods: {
-            getRecords() {
-                return axios.get(`${this.endpoint}`)
-                    .then(response => {
-                        this.response = response.data.data;
-                    })
+    data() {
+        return {
+            response: {
+                table: '',
+                displayable: [],
+                records: []
             },
-
-            sortBy(column) {
-                this.sort.key = column;
-                this.sort.order = this.sort.order === 'asc' ? 'desc' : 'asc';
+            sort: {
+                key: 'id',
+                order: 'asc'
+            },
+            quickSearchQuery: '',
+            limit: 50,
+            editing: {
+                id: null,
+                form: {},
+                errors: []
             }
+        };
+    },
+
+    computed: {
+        filteredRecords() {
+            let data = this.response.records;
+
+            data = data.filter((row) => {
+                return Object.keys(row).some((key) => {
+                    return String(row[key]).toLowerCase().indexOf(this.quickSearchQuery.toLowerCase()) > -1
+                });
+            });
+
+            if (this.sort.key) {
+                data = _.orderBy(data, (i) => {
+                    let value = i[this.sort.key];
+
+                    if (!isNaN(parseFloat(value))) {
+                        return parseFloat(value);
+                    }
+
+                    return String(i[this.sort.key]).toLowerCase();
+                }, this.sort.order);
+            }
+
+            return data;
+        }
+    },
+
+    methods: {
+        getRecords() {
+            return axios.get(`${this.endpoint}?${this.getQueryParameters()}`)
+                .then(response => {
+                    this.response = response.data.data;
+                })
         },
 
-        mounted() {
-            this.getRecords();
+        getQueryParameters() {
+            return queryString.stringify({
+                limit: this.limit,
+            });
+        },
+
+        sortBy(column) {
+            this.sort.key = column;
+            this.sort.order = this.sort.order === 'asc' ? 'desc' : 'asc';
+        },
+
+        edit(record) {
+            this.editing.errors = [];
+            this.editing.id = record.id;
+            this.editing.form = _.pick(record, this.response.updatable);
         }
+    },
+
+    mounted() {
+        this.getRecords();
     }
+}
 </script>
 
 <style lang="scss" scoped>

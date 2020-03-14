@@ -23,7 +23,7 @@ class LoginController extends Controller
         if ($validation->fails()) {
             return response()->json([
                 'status' => 400,
-                'msg' => 'error',
+                'code' => 2,
                 'data' => $validation->errors()
             ], 400);
         }
@@ -40,19 +40,21 @@ class LoginController extends Controller
             $user   = Auth::user();
             $token  = $user->createToken('authToken');
 
-            $data['token'] = [
-                'accessToken' => $token->accessToken,
-                'expiresAt' => strtotime($token->token->expires_at)
-            ];
+            $data['accessToken'] = $token->accessToken;
+            $data['expiresAt'] = strtotime($token->token->expires_at);
 
             return response()->json([
-                'status' => 200,
-                'msg' => 'success',
+                'code' => 0,
                 'data' => $data
             ]);
 
         } else {
-            return abort(401);
+            return response()->json([
+                'code' => 1,
+                'data' => [
+                    "error" => ["phone or password not valid"]
+                ]
+            ], 400);
         }
     }
 
@@ -67,10 +69,11 @@ class LoginController extends Controller
         $request->user()->token()->revoke();
 
         return response()->json([
-            'status' => 200,
-            'msg' => 'Logged out successfully',
-            'data' => ''
-        ]);
+            'code' => 0,
+            'data' => [
+                "success" => "Logged out successfully"
+            ]
+            ], 200);
     }
 
     /**

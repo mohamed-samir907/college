@@ -41,9 +41,9 @@ class MainRepository implements RepositoryInterface
      *
      * @return Collection
      */
-    public function getRecords()
+    public function getRecords($limit)
     {
-        return $this->builder->get($this->getDisplayableColumns());
+        return $this->builder->limit($limit)->get($this->getDisplayableColumns());
     }
 
     /**
@@ -54,6 +54,16 @@ class MainRepository implements RepositoryInterface
     public function getDisplayableColumns()
     {
         return array_diff($this->getDatabaseColumnNames(), $this->builder->getModel()->getHidden());
+    }
+
+    /**
+     * Get the updatable columns.
+     *
+     * @return array
+     */
+    public function getUpdatableColumns()
+    {
+        return $this->getDisplayableColumns();
     }
 
     /**

@@ -60,7 +60,7 @@ class CourseRouteServiceProvider extends ServiceProvider
     protected function mapAdminRoutes()
     {
         Route::prefix(buildRoutePrefix('admin'))
-             ->middleware(['web'])
+             ->middleware(['web', 'auth:api'])
              ->namespace($this->namespace)
              ->group(base_path($this->modulePath . 'routes/admin.php'));
     }

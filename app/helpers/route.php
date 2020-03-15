@@ -13,3 +13,16 @@ if (!function_exists('buildRoutePrefix')) {
         return config('module.routes.prefix.' . $target);
     }
 }
+
+if (!function_exists('apiUser')) {
+
+    /**
+     * Get the current authenticated user with guard api.
+     *
+     * @return \App\User|null
+     */
+    function apiUser()
+    {
+        return auth('api')->user();
+    }
+}

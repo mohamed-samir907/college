@@ -22,6 +22,6 @@ class Course extends Model
      */
     public function categories()
     {
-        return $this->hasMany('Categories\Models\Category');
+        return $this->hasMany('Courses\Models\Category');
     }
 }

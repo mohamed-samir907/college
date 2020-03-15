@@ -6,10 +6,10 @@ use Illuminate\Http\Request;
 use Common\Repositories\MainRepository;
 use App\Http\Controllers\Controller;
 
-abstract class MainController extends Controller
+class MainController extends Controller
 {
     /** @var MainRepository */
-    private $repository;
+    protected $repository;
 
     /**
      * Constructor.

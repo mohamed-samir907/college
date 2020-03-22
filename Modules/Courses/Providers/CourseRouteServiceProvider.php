@@ -52,7 +52,7 @@ class CourseRouteServiceProvider extends ServiceProvider
     protected function mapApiRoutes()
     {
         Route::prefix(buildRoutePrefix('api'))
-             ->middleware('api')
+             ->middleware(['api', 'auth:api'])
              ->namespace($this->namespace)
              ->group(base_path($this->modulePath . 'routes/api.php'));
     }

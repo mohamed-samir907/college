@@ -24,6 +24,14 @@
         "vue-template-compiler": "^2.6.10"
     },
     "dependencies": {
-        "query-string": "^6.11.1"
+        "laravel-vue-pagination": "^2.3.1",
+        "object-to-formdata": "^3.0.6",
+        "query-string": "^6.11.1",
+        "sweetalert2": "^9.10.2",
+        "vform": "^1.0.1",
+        "vue-content-loading": "^1.6.0",
+        "vue-progressbar": "^0.7.5",
+        "vue-router": "^3.1.6",
+        "vuex": "^3.1.3"
     }
 }

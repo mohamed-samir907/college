@@ -3,9 +3,9 @@
 namespace Courses\Http\Controllers\Backend;
 
 use Courses\Repositories\CourseRepository;
-use Common\Http\Controllers\MainController;
+use Common\Http\Controllers\BackendController;
 
-class CoursesController extends MainController
+class CoursesController extends BackendController
 {
     /**
      * Constructor.

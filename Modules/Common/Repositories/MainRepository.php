@@ -19,7 +19,7 @@ class MainRepository implements RepositoryInterface
      */
     public function builder()
     {
-        // 
+        //
     }
 
     /**
@@ -43,7 +43,7 @@ class MainRepository implements RepositoryInterface
      */
     public function getRecords($limit)
     {
-        return $this->builder->limit($limit)->get($this->getDisplayableColumns());
+        return $this->builder->limit($limit)->paginate($limit);
     }
 
     /**
@@ -84,5 +84,29 @@ class MainRepository implements RepositoryInterface
     public function getTable()
     {
         return $this->builder->getModel()->getTable();
+    }
+
+    public function find($id)
+    {
+        return $this->builder->findOrFail($id);
+    }
+
+    public function create($data)
+    {
+        return $this->builder->create($data);
+    }
+
+    public function update($id, $data)
+    {
+        $record = $this->find($id);
+
+        return $record->update($data);
+    }
+
+    public function delete($id)
+    {
+        $record = $this->find($id);
+
+        return $record->delete();
     }
 }

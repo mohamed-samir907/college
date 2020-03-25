@@ -57,7 +57,8 @@ class RegisterController extends Controller
             'confirm_password'  => 'required|same:password',
             'phone'             => 'required|regex:/(01)[0-9]{9}/|unique:users',
             'level'             => 'required|in:1,2,3,4',
-            'group'             => 'required|in:a,b'
+            'group'             => 'required|in:a,b',
+            'device_id'         => 'required'
         ]);
     }
 
@@ -75,7 +76,8 @@ class RegisterController extends Controller
             'password'  => bcrypt($data['password']),
             'phone'     => $data['phone'],
             'level'     => $data['level'],
-            'group'     => $data['group']
+            'group'     => $data['group'],
+            'device_id' => $data['device_id']
         ]);
     }
 }

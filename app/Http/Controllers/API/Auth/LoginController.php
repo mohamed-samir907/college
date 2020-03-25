@@ -40,8 +40,12 @@ class LoginController extends Controller
             $user   = Auth::user();
             $token  = $user->createToken('authToken');
 
-            $data['accessToken'] = $token->accessToken;
-            $data['expiresAt'] = strtotime($token->token->expires_at);
+            $data['token'] = [
+                'accessToken' => $token->accessToken,
+                'expiresAt' => strtotime($token->token->expires_at)
+            ];
+
+            $data['user'] = new UserResource($user);
 
             return response()->json([
                 'code' => 0,

@@ -5,7 +5,7 @@ Route::prefix('oauth')->group(function() {
     # Authentication Routes
     Route::post('login', 'Auth\LoginController@login');
     Route::post('register', 'Auth\RegisterController@register');
-    
+
 });
 
 Route::middleware('auth:api')->group(function() {
@@ -16,6 +16,6 @@ Route::middleware('auth:api')->group(function() {
     });
 
     Route::middleware('must_pay')->group(function () {
-        // 
+        //
     });
 });

@@ -22,6 +22,7 @@ class UserResource extends JsonResource
             'level'             => $this->level,
             'group'             => $this->group,
             'payment_verified'  => $this->payment_verified,
+            'device_id'         => $this->device_id,
             'created_at'        => (string) $this->created_at,
             'updated_at'        => (string) $this->updated_at
         ];
